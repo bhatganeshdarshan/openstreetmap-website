@@ -87,8 +87,9 @@ class UsersController < ApplicationController
           flash[:matomo_goal] = Settings.matomo["goals"]["signup"] if defined?(Settings.matomo)
 
           referer = welcome_path(welcome_options(params[:referer]))
-          # Preserve original referer from session for email confirmation
           email_referer = session[:referer] || params[:referer]
+          email_referer_options = welcome_options(email_referer)
+          email_referer = email_referer_options ? welcome_path(email_referer_options) : email_referer
 
           if current_user.status == "active"
             successful_login(current_user, referer)
